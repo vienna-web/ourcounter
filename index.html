@@ -48,9 +48,29 @@
         </div>
     </div>
 
-    <audio preload="auto" autoplay="" id="media" src="love.mp3" autoplay preload loop="loop"></audio>
+    <audio preload="auto" id="media" src="love.mp3" loop></audio>
 
     <script>
+        // Try to play audio on page load
+        $(document).ready(function() {
+            var audio = document.getElementById('media');
+            // Try to play - will work if user has interacted with page
+            var playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function(error) {
+                    console.log("Audio autoplay was prevented. User interaction required.");
+                });
+            }
+        });
+
+        // Also try to play on any click
+        $(document).one('click', function() {
+            var audio = document.getElementById('media');
+            audio.play().catch(function(error) {
+                console.log("Audio play failed: ", error);
+            });
+        });
+
         (function () {
             var canvas = $('#canvas');
 
